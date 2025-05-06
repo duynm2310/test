@@ -1,0 +1,31 @@
+import torch
+import torchvision.transforms as transforms
+import torchvision.models as models
+from PIL import Image
+import os
+
+resnet = models.resnet50(pretrained=True)
+
+# Loại bỏ lớp fully connected cuối cùng
+modules = list(resnet.children())[:-1]  # Bỏ layer fc
+resnet = torch.nn.Sequential(*modules)
+
+#transform ảnh đầu vào
+Transforms = transforms.Compose([
+    transforms.Resize(256),
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+
+def Feature_Extraction_img(img_path):
+    features=[]
+    file_name = os.path.basename(img_path)
+    if not file_name.lower().endswith(('.png', '.jpg', '.jpeg')): return
+    img = Image.open(img_path)
+    img = Transforms(img)
+    batch = torch.unsqueeze(img, 0)
+    with torch.no_grad():
+      fc7_features = resnet(batch)
+      features.append(fc7_features.squeeze())
+    return features
