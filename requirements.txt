@@ -1,7 +1,7 @@
-flask
+Flask
 torch
 torchvision
 Pillow
-scikit-learn
-gunicorn
-os
+joblib
+werkzeug
+numpy
