@@ -4,11 +4,7 @@ import torchvision.models as models
 from PIL import Image
 import os
 
-resnet = models.resnet50(pretrained=True)
-
-# Loại bỏ lớp fully connected cuối cùng
-modules = list(resnet.children())[:-1]  # Bỏ layer fc
-resnet = torch.nn.Sequential(*modules)
+resnet = torch.load('train/resnet50_feature_extractor.pth')
 
 #transform ảnh đầu vào
 Transforms = transforms.Compose([
