@@ -51,3 +51,7 @@ def predict():
     except Exception as e:
         print("🔥 Error during prediction:", str(e))  # In ra lỗi chi tiết
         return jsonify({"error": "Internal Server Error"}), 500
+    
+if __name__ == "__main__":
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=8080)
